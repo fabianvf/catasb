@@ -37,12 +37,12 @@
     register: deployment
 
   - name: Get SSL credentials
-    shell: "cat /var/lib/origin/openshift.local.config/apiserver-fullchain.pem"
+    shell: "cat {{ oc_host_config_dir }}/apiserver-fullchain.pem"
     register: apiserver_crt_plain
     when: use_ssl == True
 
   - name: Get SSL credentials
-    shell: "cat /var/lib/origin/openshift.local.config/apiserver-privkey.pem"
+    shell: "cat {{ oc_host_config_dir }}/apiserver-privkey.pem"
     register: apiserver_key_plain
     when: use_ssl == True
 
@@ -117,7 +117,7 @@
       src: kubeconfig.templ.yaml.j2
       dest: "{{ ansible_env.HOME }}/.kube/service-catalog.config"
       owner: "{{ ansible_env.USER }}"
-      group: "{{ ansible_env.USER }}"
+      #group: "{{ ansible_env.USER }}"
       mode: 0644
 
   - lineinfile: dest={{ ansible_env.HOME }}/.bashrc line="{{ item }}" create=yes
