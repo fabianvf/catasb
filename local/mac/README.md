@@ -43,6 +43,8 @@ These playbooks will:
            * /docker_shared/origin
            * /persistedvolumes
   * Hardcoded workaround for asbcli up to see openshift url (pure docker run, outside of kube)
+  * Performance Issues:
+    * https://github.com/docker/for-mac/issues/668
 
 
 

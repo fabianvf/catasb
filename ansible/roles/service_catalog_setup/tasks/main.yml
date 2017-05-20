@@ -93,14 +93,18 @@
   # - SSL certs complained they didn't match the route name
   #
 
-  - name: Get route for apiserver
+  - name: Wait for route for apiserver to be available
     shell: "'{{ oc_cmd }}' get route -n service-catalog --no-headers=true | grep -E '^apiserver( |$)' | cat"
     register: result_get_route_apiserver
     retries: 6
     delay: 10
 
+  - name: Save route of apiserver
+    shell: "{{ oc_cmd}} get route -n service-catalog --no-headers=true | awk '{print $2}'"
+    register: result_service_catalog_endpoint
+
   - set_fact:
-      service_catalog_endpoint:  "{{ result_get_route_apiserver.stdout }}"
+      service_catalog_endpoint:  "{{ result_service_catalog_endpoint.stdout }}"
 
   # Falling back to using the unauthenticated IP of the Pod/Port for now
   - name: Get IP of APIServer
@@ -111,15 +115,34 @@
 
   - set_fact:
       service_catalog_api_server_ip:  "{{ result_apiserver_ip.stdout }}"
+      svc_cat_kube_config: "{{ ansible_env.HOME }}/.kube/service-catalog.config"
 
-  - name: Creating .kube/service-catalog.config from kubeconfig.templ.yaml.j2
-    template:
-      src: kubeconfig.templ.yaml.j2
-      dest: "{{ ansible_env.HOME }}/.kube/service-catalog.config"
-      owner: "{{ ansible_env.USER }}"
+  #- name: Creating .kube/service-catalog.config from kubeconfig.templ.yaml.j2
+  #  template:
+  #    src: kubeconfig.templ.yaml.j2
+  #    dest: "{{ ansible_env.HOME }}/.kube/service-catalog.config"
+  #    owner: "{{ ansible_env.USER }}"
       #group: "{{ ansible_env.USER }}"
-      mode: 0644
+  #    mode: 0644
+
+  - name: Remove {{ svc_cat_kube_config }} if present
+    file:
+      path: "{{ svc_cat_kube_config }}"
+      state: absent
+    become: true
+
+  - name: Create cluster entry in kube config for apiserver of service catalog
+    shell: "{{ kubectl_cmd }} config set-cluster service-catalog-cluster --insecure-skip-tls-verify=true --server=https://{{ service_catalog_endpoint }} --kubeconfig={{ svc_cat_kube_config }}"
+
+  - name: Create user credentials entry in kube config for apiserver of service catalog
+    shell: "{{ kubectl_cmd }} config set-credentials admin/service-catalog-cluster --username=admin --password=admin --kubeconfig={{ svc_cat_kube_config }}"
+
+  - name: Create context entry in kube config for apiserver of service catalog
+    shell: "{{ kubectl_cmd }} config set-context default/service-catalog-cluster/admin --cluster service-catalog-cluster --user=admin/service-catalog-cluster --kubeconfig={{ svc_cat_kube_config }}"
+
+  - name: Create context entry in kube config for apiserver of service catalog
+    shell: "{{ kubectl_cmd }} config use-context default/service-catalog-cluster/admin --kubeconfig={{ svc_cat_kube_config }}"
 
   - lineinfile: dest={{ ansible_env.HOME }}/.bashrc line="{{ item }}" create=yes
     with_items:
-      - alias catctl="kubectl --kubeconfig={{ ansible_env.HOME }}/.kube/service-catalog.config"
+      - alias catctl="kubectl --kubeconfig={{ svc_cat_kube_config }}"
