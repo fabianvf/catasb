@@ -28,25 +28,22 @@ These playbooks will:
      * `pip install six`
 
 ### Notes
- * $ time oc cluster up --create-machine
- * docker-machine create openshift --virtualbox-memory 8096
- * docker-machine rm openshift
  * Accessing the VM on OSX running docker:
      * screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
  * Need to downgrade docker
- * Error syncing pod, skipping: failed to "StartContainer" for "POD" with RunContainerError: "runContainer: docker: failed to parse docker version \"17.03.1-ce\": illegal zero-prefixed version component \"03\" in \"17.03.1-ce\""
-  * https://github.com/openshift/origin/pull/13201
-  * https://github.com/docker/for-mac/issues/1491
+    * Error syncing pod, skipping: failed to "StartContainer" for "POD" with RunContainerError: "runContainer: docker: failed to parse docker version \"17.03.1-ce\": illegal zero-prefixed version component \"03\" in \"17.03.1-ce\""
+       * https://github.com/openshift/origin/pull/13201
+       * https://github.com/docker/for-mac/issues/1491
 
-  * https://download.docker.com/mac/stable/1.12.6.14937/Docker.dmg
-   * Then de-select check for updates
+    * https://download.docker.com/mac/stable/1.12.6.14937/Docker.dmg
+       * Then de-select check for updates
 
-  * Insecure Registry setting needed 172.30.0.0/16
-  * Shared Folders
-    * /docker_shared/origin
-    * /persistedvolumes
+       * Insecure Registry setting needed 172.30.0.0/16
+       * Shared Folders
+           * /docker_shared/origin
+           * /persistedvolumes
+  * Hardcoded workaround for asbcli up to see openshift url (pure docker run, outside of kube)
 
-    
 
 
 ### Execute

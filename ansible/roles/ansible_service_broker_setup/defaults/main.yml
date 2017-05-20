@@ -1,1 +1,4 @@
 asb_src_dir: /tmp/ansible-service-broker
+dockerhub_user_name: changeme
+dockerhub_user_password: changeme
+asbcli_openshift_url: https://172.17.0.1.nip.io:8443

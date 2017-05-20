@@ -156,7 +156,7 @@
 
   # Intent of this oc cluster up is generate the master-config.yaml so we can make edits to it
   - name: Run oc cluster up
-    shell: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_hostname }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin"
+    shell: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_hostname }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin --host-config-dir={{ oc_host_config_dir }}"
     when: (oc_cluster_up_first_run and not master_config_stat.stat.exists) or ssl_changed is defined
 
   - debug:
@@ -296,7 +296,7 @@
     become: 'true'
 
   - name: Run oc cluster up
-    shell: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_hostname }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin --host-config-dir=/var/lib/origin/openshift.local.config --use-existing-config"
+    shell: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_hostname }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin --host-config-dir={{ oc_host_config_dir }} --use-existing-config"
     when: oc_cluster_up_first_run
     register: oc_cluster_up
   #
