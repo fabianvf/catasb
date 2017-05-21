@@ -9,6 +9,7 @@ These playbooks will:
   * Install Ansible Service Broker on Origin
 
 ### Pre-Reqs
+  * We can NOT work with latest Docker for Mac.
   * Older version of Docker for Mac needs to be installed
       * https://download.docker.com/mac/stable/1.12.6.14937/Docker.dmg
       * Info on issues seen:
@@ -22,8 +23,10 @@ These playbooks will:
          * /docker_shared/origin
          * /persistedvolumes
   * Networking Setup
-    * We need a static IP address we can use that will resolve on our host and from the containers
-          sudo ifconfig lo0 alias 192.168.37.1
+      * We will create a static IP aliased to lo0 automatically.  We are using the static IP address to ensure that we can always resolve openshift from the host as well as inside of containers.
+      * The local/mac/common_vars script will create a local alias automatically by running the below.  
+              sudo ifconfig lo0 alias 192.168.37.1
+
   * Recommended way to install Ansible
       * We recommend you install Ansible from pip instead of homebrew
       * This will ensure Ansible is in the python path
