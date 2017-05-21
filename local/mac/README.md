@@ -71,6 +71,13 @@ These playbooks will:
        * Point of this step is just to accept the SSL cert for the apiserver-service-catalog endpoint
     * Visit: `https://CLUSTERIP.nip.io:8443`
 
+### Bind Example
+  * Sample workflow showing how to create python webapp binding to a local postgres database
+    * Sample python web app to use:
+      * https://github.com/fusor/awsdemo.git
+    * Youtube Video showing workflow:
+      * https://www.youtube.com/watch?v=xmd52NhEjCk
+
 ### Cleanup
 
 To terminate the local instance run the below
