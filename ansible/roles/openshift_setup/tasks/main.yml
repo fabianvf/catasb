@@ -154,9 +154,16 @@
       oc_cluster_up_first_run: True
     when: "not 'cluster was started' in oc_cluster_status.stdout"
 
+  - name: Create command line for oc cluster up execution
+    set_fact:
+      oc_cluster_up_cmd: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_routing_suffix }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin --host-config-dir={{ oc_host_config_dir }}"
+
+  - debug:
+      msg: "Looking at oc cluster up command:  '{{ oc_cluster_up_cmd }}'"
+
   # Intent of this oc cluster up is generate the master-config.yaml so we can make edits to it
   - name: Run oc cluster up
-    shell: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_hostname }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin --host-config-dir={{ oc_host_config_dir }}"
+    shell: "{{ oc_cluster_up_cmd }}"
     when: (oc_cluster_up_first_run and not master_config_stat.stat.exists) or ssl_changed is defined
 
   - debug:
@@ -275,7 +282,7 @@
     lineinfile:
       dest: "{{ oc_host_config_dir }}/master/master-config.yaml"
       insertafter: "names:"
-      line: "      - \"apiserver-service-catalog.{{ openshift_hostname }}\""
+      line: "      - \"apiserver-service-catalog.{{ openshift_routing_suffix }}\""
     when: use_ssl == True
     become: 'true'
 
@@ -295,8 +302,15 @@
     when: use_ssl == True
     become: 'true'
 
+  - name: Update oc cluster up command to use --use-existing-config
+    set_fact:
+      oc_cluster_up_cmd: "{{ oc_cluster_up_cmd }} --use-existing-config"
+
+  - debug:
+      msg: "Looking at oc cluster up command:  '{{ oc_cluster_up_cmd }}'"
+
   - name: Run oc cluster up
-    shell: "{{ oc_cmd }} cluster up --routing-suffix={{ openshift_hostname }} --public-hostname={{ openshift_hostname }} --host-pv-dir={{ persistedvol_mount_point }} --version=summit --image=docker.io/ansibleplaybookbundle/origin --host-config-dir={{ oc_host_config_dir }} --use-existing-config"
+    shell: "{{ oc_cluster_up_cmd }}"
     when: oc_cluster_up_first_run
     register: oc_cluster_up
   #
