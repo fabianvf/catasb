@@ -227,8 +227,6 @@
     template:
       src: extension.j2
       dest: "{{ oc_host_config_dir }}/extension.js"
-      #owner: root
-      #group: root
       mode: 0644
     register: extension_script_result
     become: 'true'
