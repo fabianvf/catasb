@@ -85,8 +85,7 @@ oc_cmd: "{{ oc_client_install_path }}/oc"
 oadm_cmd: "{{ oc_client_install_path }}/oadm"
 kubectl_cmd: "{{ oc_client_install_path }}/kubectl"
 
-oc_host_config_dir: /docker_shared/origin
-#oc_host_config_dir: /var/lib/origin/openshift.local.config
+oc_host_config_dir: /var/lib/origin/openshift.local.config
 
 deploy_rds_demo_instance: true
 
