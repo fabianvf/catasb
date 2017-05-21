@@ -44,13 +44,10 @@ These playbooks will:
 
                         $ python -c "import ansible;print(ansible.__version__)"
                         2.3.0.0
-  * Install python dependencies
-     * `pip install six`
 
 ### Notes
   * Accessing the VM on OSX running docker:
      * screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
-  * Hardcoded workaround for asbcli up to see openshift url (pure docker run, outside of kube)
   * Performance Issues:
     * Shared Volume issues
         * https://github.com/docker/for-mac/issues/668
