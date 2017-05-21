@@ -33,16 +33,17 @@ These playbooks will:
       * This will ensure Ansible is in the python path
           * MacOS example Ansible to be installed from `pip` and not `brew`
               * From homebrew we see:
-                      $ python -c "import ansible;print(ansible.__version__)"
-                      Traceback (most recent call last):
-                      File "<string>", line 1, in <module>
-                      ImportError: No module named ansible
 
-                      brew uninstall ansible
-                      pip install ansible
+                        $ python -c "import ansible;print(ansible.__version__)"
+                        Traceback (most recent call last):
+                        File "<string>", line 1, in <module>
+                        ImportError: No module named ansible
 
-                      $ python -c "import ansible;print(ansible.__version__)"
-                      2.3.0.0
+                        brew uninstall ansible
+                        pip install ansible
+
+                        $ python -c "import ansible;print(ansible.__version__)"
+                        2.3.0.0
   * Install python dependencies
      * `pip install six`
 
