@@ -53,7 +53,7 @@ instance_type: c4.4xlarge
 #
 openshift_hostname: "{{target_subdomain}}.{{target_dns_zone}}"
 openshift_routing_suffix: "{{target_subdomain}}.{{target_dns_zone}}"
-openshift_url: "{{ openshift_public_hostname }}:8443"
+openshift_url: "{{ openshift_hostname }}:8443"
 
 use_ssl: True
 email_address: "foo@bar.com"

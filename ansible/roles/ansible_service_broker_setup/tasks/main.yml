@@ -23,7 +23,7 @@
 
   - name: Use asbcli up to install Ansible Service Broker
     shell: >
-      ./asbcli up {{ asbcli_openshift_url }}
+      ./asbcli up {{ openshift_url }}
       --cluster-user={{ cluster_user }}
       --cluster-pass={{ cluster_user_password }}
       --dockerhub-user={{ dockerhub_user_name }}
