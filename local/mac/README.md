@@ -25,7 +25,8 @@ These playbooks will:
   * Networking Setup
       * We will create a static IP aliased to lo0 automatically.  We are using the static IP address to ensure that we can always resolve openshift from the host as well as inside of containers.
       * The local/mac/common_vars script will create a local alias automatically by running the below.  
-              sudo ifconfig lo0 alias 192.168.37.1
+
+                  sudo ifconfig lo0 alias 192.168.37.1
 
   * Recommended way to install Ansible
       * We recommend you install Ansible from pip instead of homebrew
