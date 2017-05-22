@@ -10,7 +10,7 @@ These playbooks will:
 
 ### Pre-Reqs
   * ```socat``` needs to be installed
-        brew install socat
+        	brew install socat
   * We can NOT work with latest Docker for Mac.
   * Older version of Docker for Mac needs to be installed
       * https://download.docker.com/mac/stable/1.12.6.14937/Docker.dmg
